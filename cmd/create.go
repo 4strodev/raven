@@ -21,13 +21,15 @@ var (
 
 // createCmd represents the create command
 var createCmd = &cobra.Command{
-	Use:   "create",
+	Use:   "create <PROJECT NAME>",
 	Short: "Creates a new project",
 	Long: `Creates a new command passing it a module, project name and a template.
 
 It uses owl to generate projects. See https://github.com/4strodev/owl.`,
+	Args: cobra.ExactArgs(1),
 
 	Run: func(cmd *cobra.Command, args []string) {
+		projectName = args[0]
 		createNewProject(projectName, projectTemplate)
 	},
 }
@@ -77,8 +79,7 @@ func init() {
 	// is called directly, e.g.:
 	// createCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	createCmd.Flags().StringVarP(&projectName, "name", "n", projectName, "--name <PROJECT NAME>")
-	createCmd.Flags().StringVarP(&projectTemplate, "template", "t", projectTemplate, "--template <TEMPLAT>")
+	createCmd.Flags().StringVarP(&projectTemplate, "template", "t", projectTemplate, "--template <TEMPLATE>")
 	createCmd.Flags().StringVarP(&moduleName, "module", "m", "", "--module <MODULE NAME>")
 
 	createCmd.MarkFlagRequired("module")
