@@ -1,17 +1,16 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2022 4strodev jumarurex@gmail.com
 
 */
 package cmd
 
 import (
 	"fmt"
-	"os"
 	"path"
 	"regexp"
 
 	"github.com/4strodev/owl/git"
-	"github.com/4strodev/raven/internals"
+	"github.com/4strodev/raven/internals/variables"
 	"github.com/spf13/cobra"
 )
 
@@ -23,6 +22,7 @@ var downloadCmd = &cobra.Command{
 To avoid download a remote template that you use it frequently it is a better option download it.`,
 	Args: cobra.RangeArgs(1, 2),
 	Run: func(cmd *cobra.Command, args []string) {
+		var err error
 		repo := args[0]
 		var destination string
 
@@ -32,13 +32,13 @@ To avoid download a remote template that you use it frequently it is a better op
 		if len(args) == 2 {
 			destination = args[0]
 		}
-		destination = path.Join(os.Getenv("HOME"), internals.LOCAL_TEMPLATES_DIRECTORY, parsedRepo)
+		destination = path.Join(variables.TemplatesDirectory(), parsedRepo)
 
 		// check if template already was downloaded
 		if Verbose {
 			fmt.Printf("Downloading %s into %s\n", repo, destination)
 		}
-		err := git.Clone(repo, destination)
+		err = git.Clone(repo, destination)
 		cobra.CheckErr(err)
 	},
 }
