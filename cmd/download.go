@@ -6,22 +6,40 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+	"path"
+	"regexp"
 
+	"github.com/4strodev/owl/git"
+	"github.com/4strodev/raven/internals"
 	"github.com/spf13/cobra"
 )
 
 // downloadCmd represents the download command
 var downloadCmd = &cobra.Command{
 	Use:   "download <REMOTE TEMPLATE>",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Download a remote template",
+	Long: `Every time you use a remote template raven saves it in a tmp folder.
+To avoid download a remote template that you use it frequently it is a better option download it.`,
+	Args: cobra.RangeArgs(1, 2),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("download called")
+		repo := args[0]
+		var destination string
+
+		regexParser := regexp.MustCompile("https?://")
+		parsedRepo := regexParser.ReplaceAllString(repo, "")
+
+		if len(args) == 2 {
+			destination = args[0]
+		}
+		destination = path.Join(os.Getenv("HOME"), internals.LOCAL_TEMPLATES_DIRECTORY, parsedRepo)
+
+		// check if template already was downloaded
+		if Verbose {
+			fmt.Printf("Downloading %s into %s\n", repo, destination)
+		}
+		err := git.Clone(repo, destination)
+		cobra.CheckErr(err)
 	},
 }
 

@@ -7,6 +7,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path"
 
 	"github.com/4strodev/owl"
 	owl_template "github.com/4strodev/owl/template"
@@ -39,8 +40,8 @@ func createNewProject(name, template string) {
 	project := owl.NewProject(owl.ProjectConfig{
 		Name:               projectName,
 		TemplateName:       projectTemplate,
-		LocalTemplatesDirs: []string{"~/.raven/templates"},
-		VerboseOutput:      true,
+		LocalTemplatesDirs: []string{path.Join(os.Getenv("HOME"), ".raven/templates")},
+		VerboseOutput:      Verbose,
 		TempDir:            "/tmp/raven",
 	}, owl_template.TemplateConfig{
 		ConfigType: "toml",
