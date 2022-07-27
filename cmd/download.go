@@ -10,7 +10,7 @@ import (
 	"regexp"
 
 	"github.com/4strodev/owl/git"
-	"github.com/4strodev/raven/internals/variables"
+	"github.com/4strodev/raven/internal/variables"
 	"github.com/spf13/cobra"
 )
 
