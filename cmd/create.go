@@ -47,6 +47,7 @@ func createNewProject(name, template string) {
 		ConfigType: "toml",
 		Context: map[string]any{
 			"ModuleName": moduleName,
+			"ProjectName": projectName,
 		},
 	})
 
