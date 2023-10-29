@@ -16,10 +16,12 @@ var (
 	}
 )
 
+// Returns the command configuration to create a new project
 func GetCreateCommand(inject injector.Injector) *cli.Command {
 	return &cli.Command{
 		Name: "create",
 		Action: func(ctx *cli.Context) error {
+			// This command expects a project name
 			args := ctx.Args()
 			if args.Len() != 1 {
 				return fmt.Errorf("expected 1 argument provided: %d", args.Len())
